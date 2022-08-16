@@ -1,1 +1,2 @@
+# -g: compile with debugging info, it will show the line numbers executed.
 gcc prog.c -g -o prog
