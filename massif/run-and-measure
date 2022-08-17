@@ -1,4 +1,5 @@
 # Options:
 # --time-unit=B specify that we want the time unit to instead be the number of bytes allocated/deallocated on the heap and stack(s).
 # --stacks=yes option: measure the size of the stack(s). By default, stack profiling is off as it slows Massif down greatly.
-valgrind --tool=massif --time-unit=B --stacks=yes ./prog
+#valgrind --tool=massif --time-unit=B --stacks=yes ./prog
+valgrind --tool=massif --time-unit=B ./prog
