@@ -1,0 +1,1 @@
+[Resource]<https://creativcoder.dev/checking-memory-leaks-ffi>. Note, [since 2018]<https://internals.rust-lang.org/t/jemalloc-was-just-removed-from-the-standard-library/8759>, Rust programs have been using the system allocator by default instead of jemalloc 
