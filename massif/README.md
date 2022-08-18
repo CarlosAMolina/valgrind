@@ -12,9 +12,21 @@ We must use the [debug info option](<https://doc.rust-lang.org/rustc/codegen-opt
 
 ```bash
 cargo build --verbose
-   Compiling ....
-     Running `rustc --crate-name ... -C debuginfo=2 ...
+   Compiling foo v0.1.0 (/tmp/foo)
+     Running `rustc --crate-name foo --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi --crate-type bin --emit=dep-info,link -C embed-bitcode=no -C debuginfo=2 -C metadata=48ffd6d29e667245 -C extra-filename=-48ffd6d29e667245 --out-dir /tmp/foo/target/debug/deps -C incremental=/tmp/foo/target/debug/incremental -L dependency=/tmp/foo/target/debug/deps`
+    Finished dev [unoptimized + debuginfo] target(s) in 0.56s
 ```
+
+The `cargo build --relase` command does not use debuginfo by default, this is specificed in [the docs](<https://doc.rust-lang.org/rustc/codegen-options/index.html#opt-level>) `If not specified, debug assertions are automatically enabled only if the opt-level is 0.`:
+
+```bash
+cargo build --release --verbose
+   Compiling foo v0.1.0 (/tmp/foo)
+     Running `rustc --crate-name foo --edition=2021 src/main.rs --error-format=json --json=diagnostic-rendered-ansi --crate-type bin --emit=dep-info,link -C opt-level=3 -C embed-bitcode=no -C metadata=99b4a5d477b3560b -C extra-filename=-99b4a5d477b3560b --out-dir /tmp/foo/target/release/deps -L dependency=/tmp/foo/target/release/deps`
+    Finished release [optimized] target(s) in 0.22s
+```
+
+
 
 ## Run
 
