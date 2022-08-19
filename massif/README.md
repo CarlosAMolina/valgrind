@@ -8,7 +8,7 @@ The [docs say](<https://valgrind.org/docs/manual/ms-manual.html>) `you should co
 
 ### Rust
 
-We must use the [debug info option](<https://doc.rust-lang.org/rustc/codegen-options/index.html?highlight=debuginfo#debuginfo>) with `-C debuginfo=2`. The command `cargo build` does this by default, as you can see with:
+The [debug info option](<https://doc.rust-lang.org/rustc/codegen-options/index.html?highlight=debuginfo#debuginfo>) is activated with `-C debuginfo=2`. The command `cargo build` does this by default, as you can see with:
 
 ```bash
 cargo build --verbose
@@ -26,27 +26,41 @@ cargo build --release --verbose
     Finished release [optimized] target(s) in 0.22s
 ```
 
+## Compile the program
 
-
-## Run
-
-First, compile the program:
+First, compile the program running the following script that you can find in the folder of each language:
 
 ```bash
 ./compile-the-program
 ```
 
+## Run
+
 Run and measure the program:
 
 ```bash
-./run-and-measure
+# C
+./run-and-measure c/prog
+# Rust debug
+./run-and-measure rust/prog/target/debug/prog
+# Rust release
+./run-and-measure rust/prog/target/release/prog
 ```
 
-See te results. For example:
+## Analyze the results
+
+To see the results, you can run:
 
 ```bash
 ms_print massif.out.97395  | less
 ```
+
+### Notes
+
+- `massif.out....` result files:
+  - Rust debug version, shows only one function of the `main.rs` file.
+  - Rust release version does not show any function.
+  - The c program has more info about the program functions executed.
 
 ## Resources
 
