@@ -14,8 +14,23 @@
 # - https://valgrind.org/docs/manual/ms-manual.html
 # - Filename options are descibed below `--log-file=<filename>` at https://valgrind.org/docs/manual/manual-core.html#manual-core.toolopts.
 
-program=$1
+measure() {
+    language=$1
+    command=$2
+    if [ ! -z $3 ] ; then
+	command="$command $3"
+    fi
+    echo "[DEBUG] Init language '$language' and command '$command'"
+    valgrind --tool=massif --time-unit=B --massif-out-file=massif.out.%p.$language.heap-only $command
+    valgrind --tool=massif --time-unit=B --stacks=yes --massif-out-file=massif.out.%p.$language.add-stacks $command
+    valgrind --tool=massif --time-unit=B --pages-as-heap=yes --massif-out-file=massif.out.%p.$language.add-pages-as-heap $command
+}
 
-valgrind --tool=massif --time-unit=B --massif-out-file=massif.out.%p.heap-only ./$program
-valgrind --tool=massif --time-unit=B --stacks=yes --massif-out-file=massif.out.%p.add-stacks ./$program
-valgrind --tool=massif --time-unit=B --pages-as-heap=yes --massif-out-file=massif.out.%p.add-pages-as-heap ./$program
+# C
+measure c c/prog 
+# Rust
+measure rust rust/prog/target/debug/prog
+# Python
+source python/env/bin/activate
+measure python python python/src/main.py
+
