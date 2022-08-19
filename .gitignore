@@ -1,3 +1,4 @@
+env
 /massif/c/prog
 massif.out.*
 /massif/prog

@@ -26,13 +26,19 @@ cargo build --release --verbose
     Finished release [optimized] target(s) in 0.22s
 ```
 
-## Compile the program
+## Configuration
+
+### C and Rust. Compile the program
 
 First, compile the program running the following script that you can find in the folder of each language:
 
 ```bash
 ./compile-the-program
 ```
+
+### Python
+
+Install the requirements.txt file.
 
 ## Run
 
