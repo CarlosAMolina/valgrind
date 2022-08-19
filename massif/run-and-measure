@@ -1,8 +1,21 @@
 # Options:
 # --time-unit=B specify that we want the time unit to instead be the number of bytes allocated/deallocated on the heap and stack(s).
 # --stacks=yes option: measure the size of the stack(s). By default, stack profiling is off as it slows Massif down greatly.
+# --massif-out-file: file with Massif's profiling data.
+# --pages-as-heap=yes: tells Massif to profile memory at the page level rather than at the malloc'd block level.
+#   By default, Massif measures only higher-level malloc calls, Massif does not measure:
+#   - The lower-level system calls that a program may use to allocate memory.
+#   - The size of code, data and BSS segments.
+#   Therefore, the numbers reported by Massif may be significantly smaller than those reported by tools such as top that measure a program's total size in memory.
+#   The allocation functions measured by default by Massif are built on top of these system calls. For example, when needed, an allocator will typically call mmap to allocate a large chunk of memory, and then hand over pieces of that memory chunk to the client program in response to calls to malloc et al.
+#   You can use the --pages-as-heap=yes to measure it, even the stack is measured; for this reason --stacks=yes is not allowed in conjunction with --pages-as-heap=yes.
+#
+# References:
+# - https://valgrind.org/docs/manual/ms-manual.html
+# - Filename options are descibed below `--log-file=<filename>` at https://valgrind.org/docs/manual/manual-core.html#manual-core.toolopts.
 
 program=$1
 
-#valgrind --tool=massif --time-unit=B --stacks=yes ./$program
-valgrind --tool=massif --time-unit=B ./$program
+valgrind --tool=massif --time-unit=B --massif-out-file=massif.out.%p.heap-only ./$program
+valgrind --tool=massif --time-unit=B --stacks=yes --massif-out-file=massif.out.%p.add-stacks ./$program
+valgrind --tool=massif --time-unit=B --pages-as-heap=yes --massif-out-file=massif.out.%p.add-pages-as-heap ./$program
